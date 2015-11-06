@@ -1,0 +1,21 @@
+{
+  "name": "Drink-Master",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "pg": "^4.4.3",
+    "pg-hstore": "^2.3.2"
+  }
+}
