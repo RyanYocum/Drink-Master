@@ -2,7 +2,7 @@
   "name": "Drink-Master",
   "version": "0.0.1",
   "description": "",
-  "main": "index",
+  "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",
@@ -15,7 +15,10 @@
   },
   "homepage": "",
   "dependencies": {
+    "hapi": "^11.1.0",
+    "inert": "^3.2.0",
     "pg": "^4.4.3",
-    "pg-hstore": "^2.3.2"
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.13.0"
   }
 }
