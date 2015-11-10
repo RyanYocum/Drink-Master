@@ -34,10 +34,10 @@ var Style = sequelize.define('style', {
   name: Sequelize.STRING
 });
 
-// var IngredientRecipe = sequelize.define('ingredientrecipe', {
-//   amount: Sequelize.FLOAT,
-//   unit: Sequelize.STRING
-// });
+var IngredientRecipe = sequelize.define('ingredientrecipe', {
+  amount: Sequelize.FLOAT,
+  unit: Sequelize.STRING
+});
 
 Ingredient.belongsToMany(Recipe, {as: 'item', through: 'ingredientrecipe'});
 Recipe.belongsToMany(Ingredient, {as:'item', through: 'ingredientrecipe'});
@@ -67,7 +67,7 @@ server.route({
     Recipe.findOrCreate({where: {name: req.payload.name}, defaults: {
       type: req.payload.style,
       alcoholic: true
-    }}).then(function (recipe, created) {
+    }}).spread(function (recipe, created) {
       // console.log(recipe)
       if (created === false) {
         rep('ALREADY THERE');
@@ -79,10 +79,16 @@ server.route({
             class: "liqueur",
             type: "what was type supposed to be?"
             }
-          }).then(function (ingredient) {
-            ingredient.addItem(recipe).spread(function () {
-              recipe.addItem(ingredient).then(function (data) {
-                console.log(data)
+          }).spread(function (ingredient) {
+            ingredient.addItem(recipe).then(function () {
+              recipe.addItem(ingredient).then(function () {
+                IngredientRecipe.find({where: {recipeId: recipe.id, ingredientId: ingredient.id}}).then(function (item) {
+                  item.updateAttributes({
+                    unit: "fl oz",
+                    amount: 2
+                  })
+                })
+                
               })
             })
           })
