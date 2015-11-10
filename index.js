@@ -7,7 +7,8 @@ var Sequelize = require('sequelize');
 
 var sequelize = new Sequelize('drinks', 'postgres', 'postgres', {
   host: 'localhost',
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: false
 });
 
 var Ingredient = sequelize.define('ingredient', {
@@ -64,11 +65,11 @@ server.route({
   method: 'POST',
   path: '/submit',
   handler: function (req, rep) {
+    console.log(req.payload);
     Recipe.findOrCreate({where: {name: req.payload.name}, defaults: {
       type: req.payload.style,
       alcoholic: true
     }}).spread(function (recipe, created) {
-      // console.log(recipe)
       if (created === false) {
         rep('ALREADY THERE');
       }
@@ -83,9 +84,10 @@ server.route({
             ingredient.addItem(recipe).then(function () {
               recipe.addItem(ingredient).then(function () {
                 IngredientRecipe.find({where: {recipeId: recipe.id, ingredientId: ingredient.id}}).then(function (item) {
+                  console.log(req.payload.amount[i])
                   item.updateAttributes({
                     unit: "fl oz",
-                    amount: 2
+                    amount: req.payload.amount[i]
                   })
                 })
                 
@@ -93,9 +95,9 @@ server.route({
             })
           })
         }
+        rep('YAY');
       }
     })
-    rep('YAY');
   }
 })
 
