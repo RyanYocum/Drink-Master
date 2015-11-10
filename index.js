@@ -34,13 +34,13 @@ var Style = sequelize.define('style', {
   name: Sequelize.STRING
 });
 
-var IngredientRecipe = sequelize.define('ingredientrecipe', {
-  amount: Sequelize.FLOAT,
-  unit: Sequelize.STRING
-});
+// var IngredientRecipe = sequelize.define('ingredientrecipe', {
+//   amount: Sequelize.FLOAT,
+//   unit: Sequelize.STRING
+// });
 
-Ingredient.hasMany(IngredientRecipe, {as: 'recipes'});
-Recipe.hasMany(IngredientRecipe, {as:'items'});
+Ingredient.belongsToMany(Recipe, {as: 'item', through: 'ingredientrecipe'});
+Recipe.belongsToMany(Ingredient, {as:'item', through: 'ingredientrecipe'});
 Recipe.hasOne(Glass, {as: 'glass'});
 Recipe.hasOne(Style, {as: 'style'});
 
@@ -64,18 +64,31 @@ server.route({
   method: 'POST',
   path: '/submit',
   handler: function (req, rep) {
-    // Recipe.findOrCreate({where: {name: req.name}, defaults: {
-    //   type: 'cocktail',
-    //   alcoholic: true
-    // }}).then(function (recipe, created) {
-    //   if (created === false) {
-    //     rep('ALREADY THERE');
-    //   }
-    //   else {
-    //     Ingredient.findOrCreate({where: {name: req}})
-    //   }
-    // })
-    console.log(req.body);
+    Recipe.findOrCreate({where: {name: req.payload.name}, defaults: {
+      type: req.payload.style,
+      alcoholic: true
+    }}).then(function (recipe, created) {
+      // console.log(recipe)
+      if (created === false) {
+        rep('ALREADY THERE');
+      }
+      else {
+        for (var i = 0; i < req.payload.ingredient.length; i++) {
+          Ingredient.findOrCreate({where: {name: req.payload.ingredient[i]}, defaults: {
+            alcoholic: true,
+            class: "liqueur",
+            type: "what was type supposed to be?"
+            }
+          }).then(function (ingredient) {
+            ingredient.addItem(recipe).spread(function () {
+              recipe.addItem(ingredient).then(function (data) {
+                console.log(data)
+              })
+            })
+          })
+        }
+      }
+    })
     rep('YAY');
   }
 })
