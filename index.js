@@ -99,7 +99,16 @@ server.route({
       }
     })
   }
-})
+});
+
+server.route({
+  method: 'GET',
+  path: '/recipes',
+  handler: function (req, rep) {
+    Recipe.findAll({include: [model: Ingredient, as: 'ingredientrecipe']})
+  }
+});
+
 
 server.start(function () {
     console.log('Server running at:', server.info.uri);
