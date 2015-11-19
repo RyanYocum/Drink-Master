@@ -105,7 +105,9 @@ server.route({
   method: 'GET',
   path: '/recipes',
   handler: function (req, rep) {
-    Recipe.findAll({include: [model: Ingredient, as: 'ingredientrecipe']})
+    Recipe.findAll({include: [{model: Ingredient, as: 'item'}]}).then(function (recipes) {
+      rep(recipes)
+    });
   }
 });
 
