@@ -121,6 +121,15 @@ server.route({
   }
 });
 
+server.route({
+  method: 'GET',
+  path: '/recipelist',
+  handler: function (request, reply) {
+    Recipe.findAll({attributes: ['name']}).then(function (recipes) {
+      reply(recipes)
+    })
+  }
+});
 
 server.start(function () {
     console.log('Server running at:', server.info.uri);
