@@ -111,6 +111,16 @@ server.route({
   }
 });
 
+server.route({
+  method: 'GET',
+  path: '/ingredients',
+  handler: function (request, reply) {
+    Ingredient.findAll().then(function (ingredients) {
+      reply(ingredients)
+    })
+  }
+});
+
 
 server.start(function () {
     console.log('Server running at:', server.info.uri);
