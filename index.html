@@ -10,7 +10,16 @@
 
   <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
 
-
+  <script>
+    var count = 3;
+    function moreIngredients() {
+      count++
+      var ingred = document.getElementById('ingredient')
+      var newIngred = document.createElement('div');
+      newIngred.innerHTML = '<input type="text" name="ingredient" placeholder="Ingredient"><input type="number" step="0.01" min="0" name="amount" placeholder="Amount"><select name="unit"><option value="oz">oz</option><option value="teaspoon">teaspoon</option><option value="dash">dash</option></select>';
+      ingred.appendChild(newIngred)
+    }
+  </script>
 </head>
 
 <body>
@@ -21,31 +30,35 @@
     <br>
     <input type="text" name="style" placeholder="Style">
     <br>
-    <input type="text" name="ingredient" placeholder="Ingredient">
-    <input type="number" step="0.01" min="0" name="amount" placeholder="Amount">
-    <select name="unit">
-      <option value="oz">oz</option>
-      <option value="teaspoon">teaspoon</option>
-      <option value="dash">dash</option>
-    </select>
-    <br>
-    <input type="text" name="ingredient" placeholder="Ingredient">
-    <input type="number" step="0.01" min="0" name="amount" placeholder="Amount">
-    <select name="unit">
-      <option value="oz">oz</option>
-      <option value="teaspoon">teaspoon</option>
-      <option value="dash">dash</option>
-    </select>
-    <br>
-    <input type="text" name="ingredient" placeholder="Ingredient">
-    <input type="number" step="0.01" min="0" name="amount" placeholder="Amount">
-    <select name="unit">
-      <option value="oz">oz</option>
-      <option value="teaspoon">teaspoon</option>
-      <option value="dash">dash</option>
-    </select>
+    <div id="ingredient">
+      <input type="text" name="ingredient" placeholder="Ingredient">
+      <input type="number" step="0.01" min="0" name="amount" placeholder="Amount">
+      <select name="unit">
+        <option value="oz">oz</option>
+        <option value="teaspoon">teaspoon</option>
+        <option value="dash">dash</option>
+      </select>
+      <br>
+      <input type="text" name="ingredient" placeholder="Ingredient">
+      <input type="number" step="0.01" min="0" name="amount" placeholder="Amount">
+      <select name="unit">
+        <option value="oz">oz</option>
+        <option value="teaspoon">teaspoon</option>
+        <option value="dash">dash</option>
+      </select>
+      <br>
+      <input type="text" name="ingredient" placeholder="Ingredient">
+      <input type="number" step="0.01" min="0" name="amount" placeholder="Amount">
+      <select name="unit">
+        <option value="oz">oz</option>
+        <option value="teaspoon">teaspoon</option>
+        <option value="dash">dash</option>
+      </select>
+    </div>
     <br>
     <input type="submit" name="submit" value="Submit">
   </form>
+
+    <button onClick="moreIngredients()">MORE</button>
 </body>
 </html>
