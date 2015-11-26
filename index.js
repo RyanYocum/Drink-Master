@@ -36,7 +36,7 @@ var Glass = sequelize.define('glass', {
 });
 
 var Style = sequelize.define('style', {
-  name: Sequelize.STRING
+  name: Sequelize.STRING,
   description: Sequelize.TEXT
 });
 
