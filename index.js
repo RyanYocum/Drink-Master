@@ -16,23 +16,28 @@ var Ingredient = sequelize.define('ingredient', {
   class: Sequelize.STRING,
   type: Sequelize.STRING,
   alcoholic: Sequelize.BOOLEAN,
-  percentage: Sequelize.FLOAT
+  percentage: Sequelize.FLOAT,
+  description: Sequelize.TEXT
 });
 
 var Recipe = sequelize.define('recipe', {
   name: Sequelize.STRING,
   alcoholic: Sequelize.BOOLEAN,
   type: Sequelize.STRING,
-  subtype: Sequelize.STRING
+  subtype: Sequelize.STRING,
+  instructions: Sequelize.TEXT,
+  description: Sequelize.TEXT
 });
 
 var Glass = sequelize.define('glass', {
   name: Sequelize.STRING,
   size: Sequelize.FLOAT,
+  description: Sequelize.TEXT
 });
 
 var Style = sequelize.define('style', {
   name: Sequelize.STRING
+  description: Sequelize.TEXT
 });
 
 var IngredientRecipe = sequelize.define('ingredientrecipe', {
@@ -75,25 +80,27 @@ server.route({
       }
       else {
         for (var i = 0; i < req.payload.ingredient.length; i++) {
-          Ingredient.findOrCreate({where: {name: req.payload.ingredient[i]}, defaults: {
-            alcoholic: true,
-            class: "liqueur",
-            type: "what was type supposed to be?"
-            }
-          }).spread(function (ingredient) {
-            ingredient.addItem(recipe).then(function () {
-              recipe.addItem(ingredient).then(function () {
-                IngredientRecipe.find({where: {recipeId: recipe.id, ingredientId: ingredient.id}}).then(function (item) {
-                  console.log(req.payload.amount[i])
-                  item.updateAttributes({
-                    unit: "fl oz",
-                    amount: req.payload.amount[i]
+          if (req.payload.ingredient[i]) {
+            Ingredient.findOrCreate({where: {name: req.payload.ingredient[i]}, defaults: {
+              alcoholic: true,
+              class: "liqueur",
+              type: "what was type supposed to be?"
+              }
+            }).spread(function (ingredient) {
+              ingredient.addItem(recipe).then(function () {
+                recipe.addItem(ingredient).then(function () {
+                  IngredientRecipe.find({where: {recipeId: recipe.id, ingredientId: ingredient.id}}).then(function (item) {
+                    console.log(req.payload.amount[i])
+                    item.updateAttributes({
+                      unit: "fl oz",
+                      amount: req.payload.amount[i]
+                    })
                   })
+                  
                 })
-                
               })
             })
-          })
+          }
         }
         rep('YAY');
       }
