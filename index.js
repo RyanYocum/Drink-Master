@@ -109,6 +109,26 @@ server.route({
 });
 
 server.route({
+  method: 'POST',
+  path: '/createIngredient',
+  handler: function (request, reply) {
+    Ingredient.findOrCreate({where: {name: request.payload.name}, defaults: {
+      class: request.payload.class,
+      type: request.payload.type,
+      percentage: request.payload.percentage,
+      description: request.payload.description
+    }}).spread(function (ingredient, created) {
+      if (created) {
+        reply('Ingredient Created')
+      }
+      else {
+        reply('Ingredient already exists')
+      }
+    })
+  }
+})
+
+server.route({
   method: 'GET',
   path: '/recipes',
   handler: function (req, rep) {
