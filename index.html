@@ -25,6 +25,20 @@
 </head>
 
 <body>
+  <form action="/createIngredient" method="post">
+    <input type="text" name="name" placeholder="Ingredient Name">
+    <br>
+    <input type="text" name="class" placeholder="Class">
+    <br>
+    <input type="text" name="type" placeholder="Type">
+    <br>
+    <input type="text" name="percentage" placeholder="Alcohol Percentage">
+    <br>
+    <textarea type="text" name="description" placeholder="Description"></textarea>
+    <br>
+    <input type="submit" name="submit" value="Submit">
+  </form>
+  <br>
   <form action="/submit" method="post">
     <input type="text" name="name" placeholder="Drink Name">
     <br>
